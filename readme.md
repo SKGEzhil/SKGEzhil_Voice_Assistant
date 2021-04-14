@@ -7,10 +7,14 @@ It is a simple python based voice assistant that can do much more....
 * Play songs
 * Tell news
 * Gives weather reports
+* Tell cricket scores
 * Add events to google calendar
 * Tells upcoming events
 * Read mails
 * Can send emails
+* Set alarms
+* Set remainders
+* Can remember anything
 * Tell jokes
 * Tells definition for complicated words
 * Answers science, geographical and political questions
