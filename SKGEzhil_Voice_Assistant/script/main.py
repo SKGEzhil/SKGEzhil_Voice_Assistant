@@ -7,15 +7,6 @@ import wolframalpha
 from SKGEzhil_Voice_Assistant.script import config, google_calendar
 from SKGEzhil_Voice_Assistant.script.speech_engine import talk, take_command
 
-listener = sr.Recognizer()
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
-custom_search_api = config.custom_search_api
-custom_search_id = config.custom_search_id
-command = str
-
-
 def last_word(string):
     newstring = ""
     length = len(string)
@@ -39,6 +30,8 @@ def check_connection():
 
 
 def google_search(received_command):
+    custom_search_api = config.custom_search_api
+    custom_search_id = config.custom_search_id
     query = received_command.replace('google ', '')
     page = 1
     start = 1
@@ -63,13 +56,7 @@ def logs(question):
     import mysql.connector
     import mysql
 
-    db_connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        passwd="EzHiL2005&&",
-        database="assistant_database"
-    )
-    print(db_connection)
+    from SKGEzhil_Voice_Assistant.script.database import db_connection
     from datetime import datetime
     now = datetime.now()
     d = datetime.now().date()
@@ -200,17 +187,11 @@ def run_assistant():
 
     elif 'alarm' in received_command:
         from SKGEzhil_Voice_Assistant.script import alarm
-        hours = int(input('hours: '))
-        minutes = int(input('minutes: '))
-        alarm.set_alarm(hours, minutes)
-        alarm.ring_alarm()
+        alarm.create_alarm(received_command)
 
     elif 'wake' in received_command:
         from SKGEzhil_Voice_Assistant.script import alarm
-        hours = int(input('hours: '))
-        minutes = int(input('minutes: '))
-        alarm.set_alarm(hours, minutes)
-        alarm.ring_alarm()
+        alarm.create_alarm(received_command)
 
     else:
         try:
@@ -233,6 +214,10 @@ while True:
     if 'not' in internet:
         talk('Please connect to internet')
     else:
+        from SKGEzhil_Voice_Assistant.script.alarm import ring_alarm
+        ring_alarm()
+        from SKGEzhil_Voice_Assistant.script.remainder import remainder_alarm
+        remainder_alarm()
         # from SKGEzhil_Voice_Assistant.script import wake_word, calendar_commands, config, news, google_calendar, weather
         # wake_engine = wake_word.wake_word()
         run_assistant()
