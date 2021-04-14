@@ -1,12 +1,12 @@
 import datetime
-import pickle
 import os.path
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
+import pickle
 from datetime import datetime, timedelta
 
-import pyttsx3
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+
 from SKGEzhil_Voice_Assistant.script.speech_engine import talk
 
 # If modifying these scopes, delete the file token.pickle.
@@ -67,6 +67,7 @@ def create_event(summary, description, date):
     print("ends at: ", event_result['end']['dateTime'])
 
     talk('event created successfully')
+
 
 def list_events():
     service = get_calendar_service()

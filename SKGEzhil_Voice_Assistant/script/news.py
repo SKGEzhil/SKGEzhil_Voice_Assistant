@@ -1,7 +1,8 @@
 import requests
-import pyttsx3
+
 from SKGEzhil_Voice_Assistant.script import config
 from SKGEzhil_Voice_Assistant.script.speech_engine import talk
+
 
 def news_report():
     try:

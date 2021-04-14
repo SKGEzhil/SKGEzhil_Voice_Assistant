@@ -30,15 +30,15 @@
 #             print("Error :  " + str(e))
 #             print('error: command not received')
 #             return 'command not received'
-import speech_recognition as sr
 import pyttsx3
-
+import speech_recognition as sr
 
 listener = sr.Recognizer()
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
 command = str
+
 
 def talk(text):
     engine.say(text)

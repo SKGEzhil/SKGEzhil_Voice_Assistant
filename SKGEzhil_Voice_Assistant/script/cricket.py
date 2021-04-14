@@ -1,20 +1,20 @@
 import requests
 from bs4 import BeautifulSoup
-import speech_recognition as sr
-import pyttsx3
+
 from SKGEzhil_Voice_Assistant.script.speech_engine import talk
+
+
 def cricket_score():
-    URL = "https://www.cricbuzz.com/cricket-match/live-scores"
-    r = requests.get(URL)
-    soup = BeautifulSoup(r.content,
-                         'html5lib')
-    table = soup.find('div', attrs = {'id':'page-wrapper'})
-    team = table.find('a', attrs = {'class' : 'text-hvr-underline text-bold'})
+    url = "https://www.cricbuzz.com/cricket-match/live-scores"
+    r = requests.get(url)
+    soup = BeautifulSoup(r.content, 'html5lib')
+    table = soup.find('div', attrs={'id': 'page-wrapper'})
+    team = table.find('a', attrs={'class': 'text-hvr-underline text-bold'})
     try:
-        print(((team.text).replace(',', '')).replace('vs', 'versus'))
-        talk(((team.text).replace(',', '')).replace('vs', 'versus'))
-        team_1 = (((team.text).replace(',', '')).split('vs'))[0]
-        team_2 = (((team.text).replace(',', '')).split('vs'))[1]
+        print((team.text.replace(',', '')).replace('vs', 'versus'))
+        talk((team.text.replace(',', '')).replace('vs', 'versus'))
+        team_1 = ((team.text.replace(',', '')).split('vs'))[0]
+        team_2 = ((team.text.replace(',', '')).split('vs'))[1]
         print('Team 1: ' + team_1)
         print('Team 2:' + team_2)
         bat_team_select = table.find('div', attrs={'class': 'cb-text-live'})
@@ -42,4 +42,5 @@ def cricket_score():
                 talk(real_score)
             break
     except Exception as e:
+        print(e)
         print('No live matches now')

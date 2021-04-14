@@ -1,39 +1,4 @@
-import pyttsx3
-import speech_recognition as sr
 from SKGEzhil_Voice_Assistant.script import speech_engine
-
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
-
-
-# def talk(text):
-#     engine.say(text)
-#     engine.runAndWait()
-#
-#
-# def take_command():
-#     r = sr.Recognizer()
-#     with sr.Microphone() as source:
-#         r.adjust_for_ambient_noise(source)
-#         print("Please say something")
-#         audio = r.listen(source)
-#         # if 'baby' in r.recognize_google(audio):
-#         try:
-#             command_given = r.recognize_google(audio)
-#             print("Recognizing Now .... ")
-#             # command_given.replace('baby','')
-#             # recognize speech using google
-#             print("You have said \n" + r.recognize_google(audio))
-#             print("Audio Recorded Successfully \n ")
-#             if 'hello' in command_given:
-#                 return command_given
-#             else:
-#                 return 'command not received'
-#         except Exception as e:
-#             print("Error :  " + str(e))
-#             print('error: command not received')
-#             return 'command not received'
 
 
 def month_year_change(date_given):

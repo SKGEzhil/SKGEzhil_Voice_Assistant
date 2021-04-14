@@ -1,21 +1,19 @@
-import mysql.connector
-import mysql
-
 all_objects = []
 
 from SKGEzhil_Voice_Assistant.script.database import db_connection
 
 
-def remember(object):
+def remember(remember_object):
     db_cursor = db_connection.cursor()
     db_cursor.execute("USE assistant_database")
     try:
         sql = """INSERT INTO remember VALUES (%s)"""
-        val = (object,)
+        val = (remember_object,)
         db_cursor.execute(sql, val)
         db_connection.commit()
     except Exception as e:
         print(e)
+
 
 def retrieve(key_word):
     db_cursor = db_connection.cursor()
@@ -32,6 +30,4 @@ def retrieve(key_word):
                 print(word)
 
 
-
 retrieve('phone')
-

@@ -1,14 +1,11 @@
-from SKGEzhil_Voice_Assistant.script import current_time
-from datetime import datetime
-import mysql.connector
-import mysql
-import pyttsx3
 import threading
+from datetime import datetime
+
+import pyttsx3
+
+from SKGEzhil_Voice_Assistant.script import current_time
 from SKGEzhil_Voice_Assistant.script import speech_engine
-from SKGEzhil_Voice_Assistant.script import config
-
 from SKGEzhil_Voice_Assistant.script.database import db_connection
-
 
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
@@ -30,13 +27,13 @@ def remainder_command(command):
     else:
         speech_engine.talk('what is the remainder for?')
         remainder = input('what in the remainder for? ')
-    remaind(remainder,timing)
+    remaind(remainder, timing)
     print(f'Remainder set for {timing}')
     speech_engine.talk(f'Remainder set for {timing}')
     remainder_alarm()
 
 
-def remaind(remainder,time):
+def remaind(remainder, time):
     if 'minutes' in time:
         if 'hour' not in time:
             time = time.replace(' minutes', '')
@@ -49,7 +46,7 @@ def remaind(remainder,time):
             sql = """INSERT INTO remainders VALUES(%s, %s, %s)"""
             val = (remaind_time, 'on', remainder)
             db_cursor = db_connection.cursor()
-            db_cursor.execute(sql,val)
+            db_cursor.execute(sql, val)
             db_connection.commit()
         else:
             time = time.replace(' hours', '')
@@ -80,6 +77,7 @@ def remaind(remainder,time):
             db_cursor.execute(sql, val)
             db_connection.commit()
 
+
 def remainder_alarm():
     remainder_list = []
     db_cursor = db_connection.cursor()
@@ -92,16 +90,16 @@ def remainder_alarm():
         times = times.split(':')
         real_hour = int(times[0])
         real_minute = int(times[1])
-        alarmH = real_hour
-        alarmM = real_minute
-        amPm = 'pm'
-        print("Waiting for the alarm", alarmH, alarmM, amPm)
-        if alarmH != 12:
-            if (amPm == "pm"):
-                alarmH = alarmH + 12
+        alarm_h = real_hour
+        alarm_m = real_minute
+        am_pm = 'pm'
+        print("Waiting for the alarm", alarm_h, alarm_m, am_pm)
+        if alarm_h != 12:
+            if am_pm == "pm":
+                alarm_h = alarm_h + 12
         now = datetime.now()
         d = datetime.now().date()
-        later = datetime(d.year, d.month, d.day, alarmH, alarmM, 0)
+        later = datetime(d.year, d.month, d.day, alarm_h, alarm_m, 0)
         difference = (later - now)
         total_sec = difference.total_seconds()
 
@@ -111,15 +109,12 @@ def remainder_alarm():
             systime = f'{current_time.hours()}:{current_time.minutes()}'
             print(f'{current_time.hours()}:{current_time.minutes()}')
             db_cursor = db_connection.cursor()
-            db_cursor.execute(f"UPDATE remainders SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
+            db_cursor.execute(
+                f"UPDATE remainders SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
             db_connection.commit()
             print('Here is your remainder')
             speech_engine.talk('Here is your remainder')
             # playsound.playsound('../alarm.mp3', True)
 
-
         timer = threading.Timer(total_sec, alarm_func)
         timer.start()
-
-
-

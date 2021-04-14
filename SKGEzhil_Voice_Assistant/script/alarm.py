@@ -1,15 +1,14 @@
-import time
-from playsound import playsound
 import threading
 from datetime import datetime
+
 import playsound
-import math
+from playsound import playsound
 
 from SKGEzhil_Voice_Assistant.script.database import db_connection
-from SKGEzhil_Voice_Assistant.script.speech_engine import talk,take_command
+from SKGEzhil_Voice_Assistant.script.speech_engine import talk
+
 
 def create_alarm(command):
-
     if ' every day ' in command:
         command = command.replace(' every day ', '')
         every_day = True
@@ -53,9 +52,9 @@ def create_alarm(command):
 
     set_alarm(alarm_hours, alarm_minutes, every_day, ampm)
 
+
 def ring_alarm():
     alarm_list = []
-    ampm_list = []
     db_cursor = db_connection.cursor()
     db_cursor.execute("""SELECT * FROM alarms ORDER BY time ASC""")
     for data in db_cursor:
@@ -69,35 +68,38 @@ def ring_alarm():
         real_time = real_time.split(':')
         real_hour = int(real_time[0])
         real_minute = int(real_time[1])
-        alarmH = real_hour
-        alarmM = real_minute
-        amPm = times[1]
+        alarm_h = real_hour
+        alarm_m = real_minute
+        am_pm = times[1]
         every_day = times[2]
-        print("Waiting for the alarm", alarmH, alarmM, amPm)
-        if alarmH != 12:
-            if (amPm == "pm"):
-                alarmH = alarmH + 12
+        print("Waiting for the alarm", alarm_h, alarm_m, am_pm)
+        if alarm_h != 12:
+            if am_pm == "pm":
+                alarm_h = alarm_h + 12
         now = datetime.now()
         d = datetime.now().date()
-        later = datetime(d.year, d.month, d.day, alarmH, alarmM, 0)
+        later = datetime(d.year, d.month, d.day, alarm_h, alarm_m, 0)
         difference = (later - now)
         total_sec = difference.total_seconds()
         if total_sec < 0:
             total_sec = 86400 + total_sec
+
         def alarm_func():
             from SKGEzhil_Voice_Assistant.script import current_time
             print('ringing')
-            systime = f'{current_time.hours()}:{current_time.minutes()}'
             print(f'{current_time.hours()}:{current_time.minutes()}')
             playsound.playsound('SKGEzhil_Voice_Assistant/alarm.mp3', True)
             if every_day == 'no':
                 try:
-                    db_cursor.execute(f"UPDATE alarms SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
+                    db_cursor.execute(
+                        f"UPDATE alarms SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
                     db_connection.commit()
                 except Exception as e:
                     print(e)
+
         timer = threading.Timer(total_sec, alarm_func)
         timer.start()
+
 
 def set_alarm(hours, minutes, every_day, ampm):
     alarm_time = f'{hours}:{minutes}'
@@ -111,5 +113,3 @@ def set_alarm(hours, minutes, every_day, ampm):
     db_cursor.execute(sql, val)
     db_connection.commit()
     ring_alarm()
-
-

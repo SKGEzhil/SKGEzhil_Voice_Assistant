@@ -1,8 +1,10 @@
 import struct
-import pyaudio
+
 import pvporcupine
+import pyaudio
 
 wake_word_detected = False
+
 
 def wake_word():
     porcupine = None
@@ -15,11 +17,11 @@ def wake_word():
         pa = pyaudio.PyAudio()
 
         audio_stream = pa.open(
-                        rate=porcupine.sample_rate,
-                        channels=1,
-                        format=pyaudio.paInt16,
-                        input=True,
-                        frames_per_buffer=porcupine.frame_length)
+            rate=porcupine.sample_rate,
+            channels=1,
+            format=pyaudio.paInt16,
+            input=True,
+            frames_per_buffer=porcupine.frame_length)
 
         while True:
             pcm = audio_stream.read(porcupine.frame_length)
@@ -41,4 +43,4 @@ def wake_word():
             audio_stream.close()
 
         if pa is not None:
-                pa.terminate()
+            pa.terminate()

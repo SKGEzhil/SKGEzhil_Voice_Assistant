@@ -1,11 +1,13 @@
-import requests
-import pyttsx3
 import time
-from SKGEzhil_Voice_Assistant.script import config
+
+import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
-from SKGEzhil_Voice_Assistant.script.speech_engine import talk,take_command
+
+from SKGEzhil_Voice_Assistant.script import config
+from SKGEzhil_Voice_Assistant.script.speech_engine import talk
+
 
 def location():
     options = Options()
@@ -23,6 +25,7 @@ def location():
     latitude = str(latitude[0])
     driver.quit()
     return latitude, longitude
+
 
 def weather_report(city_name):
     try:

@@ -1,11 +1,11 @@
 import pyjokes
-import pyttsx3
 import requests
-import speech_recognition as sr
 import wikipedia
 import wolframalpha
+
 from SKGEzhil_Voice_Assistant.script import config, google_calendar
 from SKGEzhil_Voice_Assistant.script.speech_engine import talk, take_command
+
 
 def last_word(string):
     newstring = ""
@@ -53,9 +53,6 @@ def google_search(received_command):
 
 
 def logs(question):
-    import mysql.connector
-    import mysql
-
     from SKGEzhil_Voice_Assistant.script.database import db_connection
     from datetime import datetime
     now = datetime.now()
@@ -70,7 +67,7 @@ def logs(question):
 
 
 def run_assistant():
-    #received_command = take_command()
+    # received_command = take_command()
     received_command = input("enter u'r commands here: ")
     print(received_command)
     if 'command not received' in received_command:
@@ -215,10 +212,11 @@ while True:
         talk('Please connect to internet')
     else:
         from SKGEzhil_Voice_Assistant.script.alarm import ring_alarm
+
         ring_alarm()
         from SKGEzhil_Voice_Assistant.script.remainder import remainder_alarm
+
         remainder_alarm()
         # from SKGEzhil_Voice_Assistant.script import wake_word, calendar_commands, config, news, google_calendar, weather
         # wake_engine = wake_word.wake_word()
         run_assistant()
-

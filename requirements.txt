@@ -1,3 +1,10 @@
+pywhatkit
+PyDictionary
+pyaudio
+google
+googleapiclient
+mysql
+playsound
 pyjokes==0.6.0
 pyttsx3==2.90
 requests==2.21.0
