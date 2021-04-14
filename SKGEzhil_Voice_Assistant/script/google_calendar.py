@@ -7,16 +7,7 @@ from google.auth.transport.requests import Request
 from datetime import datetime, timedelta
 
 import pyttsx3
-import speech_recognition as sr
-
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
-
-
-def talk(text):
-    engine.say(text)
-    engine.runAndWait()
+from SKGEzhil_Voice_Assistant.script.speech_engine import talk
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar']

@@ -3,16 +3,8 @@ from playsound import playsound
 import threading
 from datetime import datetime
 import playsound
-import mysql.connector
-import mysql
 
-db_connection = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  passwd="EzHiL2005&&",
-    database = "assistant_database"
-)
-print(db_connection)
+from SKGEzhil_Voice_Assistant.script.database import db_connection
 
 def ring_alarm():
     alarm_list = []
@@ -28,7 +20,7 @@ def ring_alarm():
         real_minute = int(times[1])
         alarmH = real_hour
         alarmM = real_minute
-        amPm = 'pm'
+        amPm = 'am'
         print("Waiting for the alarm", alarmH, alarmM, amPm)
         if alarmH != 12:
             if (amPm == "pm"):

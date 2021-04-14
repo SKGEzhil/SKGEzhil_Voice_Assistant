@@ -5,15 +5,7 @@ from SKGEzhil_Voice_Assistant.script import config
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
-
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
-
-
-def talk(text):
-    engine.say(text)
-    engine.runAndWait()
+from SKGEzhil_Voice_Assistant.script.speech_engine import talk,take_command
 
 def location():
     options = Options()

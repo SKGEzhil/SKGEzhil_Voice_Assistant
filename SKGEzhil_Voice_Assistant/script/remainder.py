@@ -7,13 +7,8 @@ import threading
 from SKGEzhil_Voice_Assistant.script import speech_engine
 from SKGEzhil_Voice_Assistant.script import config
 
-db_connection = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  passwd=config.mysql_password,
-    database = "assistant_database"
-)
-print(db_connection)
+from SKGEzhil_Voice_Assistant.script.database import db_connection
+
 
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')

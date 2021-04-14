@@ -1,13 +1,7 @@
 import requests
 import pyttsx3
 from SKGEzhil_Voice_Assistant.script import config
-
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
-def talk(text):
-    engine.say(text)
-    engine.runAndWait()
+from SKGEzhil_Voice_Assistant.script.speech_engine import talk
 
 def news_report():
     try:
