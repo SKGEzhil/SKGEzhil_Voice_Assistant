@@ -1,7 +1,6 @@
 import threading
 from datetime import datetime
 
-import playsound
 from playsound import playsound
 
 from SKGEzhil_Voice_Assistant.script.database import db_connection
@@ -88,7 +87,10 @@ def ring_alarm():
             from SKGEzhil_Voice_Assistant.script import current_time
             print('ringing')
             print(f'{current_time.hours()}:{current_time.minutes()}')
-            playsound.playsound('SKGEzhil_Voice_Assistant/alarm.mp3', True)
+            from pydub import AudioSegment
+            from pydub.playback import play
+            song = AudioSegment.from_mp3("../alarm.mp3")
+            play(song)
             if every_day == 'no':
                 try:
                     db_cursor.execute(

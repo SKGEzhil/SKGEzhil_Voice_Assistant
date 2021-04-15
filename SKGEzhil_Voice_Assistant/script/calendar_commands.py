@@ -344,6 +344,7 @@ def calendar_commands():
         year = d.year
         day = datetime.now().weekday()
         day = day + 1
+        date_given = 0
         if thursday_face < day:
             date_given = (7 - day) + thursday_face
         elif thursday_face > day:

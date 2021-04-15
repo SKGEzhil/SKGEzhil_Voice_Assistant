@@ -2,7 +2,7 @@ pywhatkit
 PyDictionary
 pyaudio
 google
-googleapiclient
+
 mysql
 playsound
 pyjokes==0.6.0
