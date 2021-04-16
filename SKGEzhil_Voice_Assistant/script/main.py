@@ -46,7 +46,6 @@ def google_search(received_command):
     for i, search_item in enumerate(search_items, start=1):
         title = search_item.get("title")
         snippet = search_item.get("snippet")
-        snippet =snippet.split()
         html_snippet = search_item.get("htmlSnippet")
         link = search_item.get("link")
         print("=" * 10, f"Result #{i + start - 1}", "=" * 10)
@@ -194,6 +193,11 @@ def run_assistant():
     elif 'wake' in received_command:
         from SKGEzhil_Voice_Assistant.script import alarm
         alarm.create_alarm(received_command)
+
+    elif 'remind' in received_command:
+        from SKGEzhil_Voice_Assistant.script import remainder
+        remainder.remainder_command(received_command)
+
 
     else:
         try:

@@ -59,6 +59,7 @@ def month_year_change(date_given):
 
 
 def calendar_commands():
+    global date_given, date_given, date_given, date_given, date_given, date_given
     from SKGEzhil_Voice_Assistant.script import google_calendar
     from datetime import datetime
     speech_engine.talk('What is the event')

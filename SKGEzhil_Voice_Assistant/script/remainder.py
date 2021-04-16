@@ -1,15 +1,9 @@
 import threading
 from datetime import datetime
 
-import pyttsx3
-
 from SKGEzhil_Voice_Assistant.script import current_time
 from SKGEzhil_Voice_Assistant.script import speech_engine
 from SKGEzhil_Voice_Assistant.script.database import db_connection
-
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
 
 
 def remainder_command(command):
@@ -26,10 +20,14 @@ def remainder_command(command):
         remainder = subject[1]
     else:
         speech_engine.talk('what is the remainder for?')
-        remainder = input('what in the remainder for? ')
+        # remainder = input('what in the remainder for? ')
+        from SKGEzhil_Voice_Assistant.script.speech_engine import take_command
+        remainder = take_command()
     remaind(remainder, timing)
     print(f'Remainder set for {timing}')
     speech_engine.talk(f'Remainder set for {timing}')
+    global reminder
+    reminder = subject
     remainder_alarm()
 
 
@@ -94,9 +92,6 @@ def remainder_alarm():
         alarm_m = real_minute
         am_pm = 'pm'
         print("Waiting for the alarm", alarm_h, alarm_m, am_pm)
-        if alarm_h != 12:
-            if am_pm == "pm":
-                alarm_h = alarm_h + 12
         now = datetime.now()
         d = datetime.now().date()
         later = datetime(d.year, d.month, d.day, alarm_h, alarm_m, 0)
@@ -104,17 +99,20 @@ def remainder_alarm():
         total_sec = difference.total_seconds()
 
         def alarm_func():
+            from SKGEzhil_Voice_Assistant.script.mail import send_mail
+            from SKGEzhil_Voice_Assistant.script import config
+            send_mail('Reminder', f'Here is your remainder {reminder}', f'{config.gmail_id}', f'{config.gmail_id}')
             from SKGEzhil_Voice_Assistant.script import current_time
             print('ringing')
             systime = f'{current_time.hours()}:{current_time.minutes()}'
             print(f'{current_time.hours()}:{current_time.minutes()}')
+            print(f'Here is your remainder {reminder}')
+            speech_engine.talk(f'Here is your remainder {reminder}')
+
             db_cursor = db_connection.cursor()
             db_cursor.execute(
                 f"UPDATE remainders SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
             db_connection.commit()
-            print('Here is your remainder')
-            speech_engine.talk('Here is your remainder')
-            # playsound.playsound('../alarm.mp3', True)
 
         timer = threading.Timer(total_sec, alarm_func)
         timer.start()

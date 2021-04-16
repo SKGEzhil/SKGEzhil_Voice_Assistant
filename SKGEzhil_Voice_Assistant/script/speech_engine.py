@@ -1,16 +1,6 @@
 import pyttsx3
 import speech_recognition as sr
 
-listener = sr.Recognizer()
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
-
-
-def talk(text):
-    engine.say(text)
-    engine.runAndWait()
-
 
 def take_command():
     r = sr.Recognizer()
@@ -27,3 +17,14 @@ def take_command():
             print("Error :  " + str(e))
             print('error: command not received')
             return 'command not received'
+
+
+engine = pyttsx3.init()
+engine.setProperty('rate', 145)
+engine.setProperty('volume', 2)
+engine.setProperty('voice', 'english')
+
+
+def talk(text):
+    engine.say(text)
+    engine.runAndWait()
