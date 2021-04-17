@@ -3,7 +3,7 @@ from datetime import datetime
 
 from SKGEzhil_Voice_Assistant.script import current_time
 from SKGEzhil_Voice_Assistant.script import speech_engine
-from SKGEzhil_Voice_Assistant.script.database import db_connection
+from SKGEzhil_Voice_Assistant.script.database import cloud_mysql_connection, local_mysql_connection, sqlite_connection
 
 
 def remainder_command(command):
@@ -32,6 +32,7 @@ def remainder_command(command):
 
 
 def remaind(remainder, time):
+    local_mysql_cursor = local_mysql_connection.cursor()
     if 'minutes' in time:
         if 'hour' not in time:
             time = time.replace(' minutes', '')
@@ -42,10 +43,15 @@ def remaind(remainder, time):
                 remaind_hours = remaind_hours + 1
             remaind_time = f'{remaind_hours}:{remaind_minutes}'
             sql = """INSERT INTO remainders VALUES(%s, %s, %s)"""
+            sqlite = """INSERT INTO remainders VALUES(?, ?, ?)"""
             val = (remaind_time, 'on', remainder)
-            db_cursor = db_connection.cursor()
+            db_cursor = cloud_mysql_connection.cursor()
+            sqlite_cursor = sqlite_connection.cursor()
+            sqlite_cursor.execute(sqlite, val)
             db_cursor.execute(sql, val)
-            db_connection.commit()
+            cloud_mysql_connection.commit()
+            local_mysql_cursor.execute(sql, val)
+            local_mysql_connection.commit()
         else:
             time = time.replace(' hours', '')
             time = time.replace(' minutes', '')
@@ -59,10 +65,15 @@ def remaind(remainder, time):
                 remaind_hours = remaind_hours + 1
             remaind_time = f'{remaind_hours}:{remaind_minutes}'
             sql = """INSERT INTO remainders VALUES(%s, %s, %s)"""
+            sqlite = """INSERT INTO remainders VALUES(?, ?, ?)"""
             val = (remaind_time, 'on', remainder)
-            db_cursor = db_connection.cursor()
+            db_cursor = cloud_mysql_connection.cursor()
+            sqlite_cursor = sqlite_connection.cursor()
+            sqlite_cursor.execute(sqlite, val)
             db_cursor.execute(sql, val)
-            db_connection.commit()
+            cloud_mysql_connection.commit()
+            local_mysql_cursor.execute(sql, val)
+            local_mysql_connection.commit()
     elif 'hours' in time:
         if 'minutes' not in time:
             time = time.replace(' hours', '')
@@ -70,17 +81,24 @@ def remaind(remainder, time):
             remaind_minutes = current_time.minutes()
             remaind_time = f'{remaind_hours}:{remaind_minutes}'
             sql = """INSERT INTO remainders VALUES(%s, %s, %s)"""
+            sqlite = """INSERT INTO remainders VALUES(?, ?, ?)"""
             val = (remaind_time, 'on', remainder)
-            db_cursor = db_connection.cursor()
+            db_cursor = cloud_mysql_connection.cursor()
+            sqlite_cursor = sqlite_connection.cursor()
+            sqlite_cursor.execute(sqlite, val)
             db_cursor.execute(sql, val)
-            db_connection.commit()
+            cloud_mysql_connection.commit()
+            local_mysql_cursor.execute(sql, val)
+            local_mysql_connection.commit()
 
 
 def remainder_alarm():
     remainder_list = []
-    db_cursor = db_connection.cursor()
-    db_cursor.execute("""SELECT * FROM remainders ORDER BY time ASC""")
-    for data in db_cursor:
+    sqlite_cursor = sqlite_connection.cursor()
+    cloud_mysql_cursor = cloud_mysql_connection.cursor()
+    local_mysql_cursor = local_mysql_connection.cursor()
+    sqlite_cursor.execute("""SELECT * FROM alarms ORDER BY time ASC""")
+    for data in sqlite_cursor:
         if data[1] == 'on':
             remainder_list.append(data[0])
     for times in remainder_list:
@@ -108,11 +126,18 @@ def remainder_alarm():
             print(f'{current_time.hours()}:{current_time.minutes()}')
             print(f'Here is your remainder {reminder}')
             speech_engine.talk(f'Here is your remainder {reminder}')
-
-            db_cursor = db_connection.cursor()
-            db_cursor.execute(
-                f"UPDATE remainders SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
-            db_connection.commit()
+            sqlite_cursor = sqlite_connection.cursor()
+            cloud_mysql_cursor = cloud_mysql_connection.cursor()
+            local_mysql_cursor = local_mysql_connection.cursor()
+            cloud_mysql_cursor.execute(
+                f"UPDATE alarms SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
+            cloud_mysql_connection.commit()
+            sqlite_cursor.execute(
+                f"UPDATE alarms SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
+            sqlite_connection.commit()
+            local_mysql_cursor.execute(
+                f"UPDATE alarms SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
+            local_mysql_cursor.commit()
 
         timer = threading.Timer(total_sec, alarm_func)
         timer.start()

@@ -57,18 +57,25 @@ def google_search(received_command):
 
 
 def logs(question):
-    from SKGEzhil_Voice_Assistant.script.database import db_connection
+    from SKGEzhil_Voice_Assistant.script.database import cloud_mysql_connection, local_mysql_connection
+    from SKGEzhil_Voice_Assistant.script.database import sqlite_connection
     from datetime import datetime
     now = datetime.now()
     d = datetime.now().date()
     time_string = now.strftime("%H:%M")
     date = f'{d.day}/{d.month}/{d.year}'
-    db_cursor = db_connection.cursor()
+    db_cursor = cloud_mysql_connection.cursor()
+    local_mysql_cursor = local_mysql_connection.cursor()
+    sqlite_cursor = sqlite_connection.cursor()
     sql = """INSERT INTO logs (questions, date, time) VALUES (%s, %s, %s)"""
+    sqlite = """INSERT INTO logs (questions, date, time) VALUES (?, ?, ?)"""
     val = (question, date, time_string)
     db_cursor.execute(sql, val)
-    db_connection.commit()
-
+    cloud_mysql_connection.commit()
+    sqlite_cursor.execute(sqlite, val)
+    sqlite_connection.commit()
+    local_mysql_cursor.execute(sql, val)
+    local_mysql_connection.commit()
 
 def run_assistant():
     # received_command = take_command()

@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="MySQL - assistant_database@localhost" uuid="3ad69559-1351-4a43-a2e2-ca9f39a9676d">
+    <data-source source="LOCAL" name="SKGEzhil" uuid="3ad69559-1351-4a43-a2e2-ca9f39a9676d">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/assistant_database</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="Cloud MySQL" uuid="a671acd0-5b6a-4754-86c7-321490d4cde5">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://SG-SKGEzhil-4178-mysql-master.servers.mongodirector.com:3306/assistant_database</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="assistant_db.sqlite" uuid="03c29d5b-01eb-46b2-ae4d-221c3f7dc0a7">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/SKGEzhil_Voice_Assistant/assistant_db.sqlite</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
 </project>

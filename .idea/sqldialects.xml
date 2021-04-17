@@ -2,6 +2,7 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/SKGEzhil_Voice_Assistant/script/alarm.py" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/SKGEzhil_Voice_Assistant/script/main.py" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/SKGEzhil_Voice_Assistant/script/remainder.py" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/SKGEzhil_Voice_Assistant/script/remember.py" dialect="GenericSQL" />
   </component>

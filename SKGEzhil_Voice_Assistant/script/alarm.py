@@ -1,9 +1,7 @@
 import threading
 from datetime import datetime
 
-from playsound import playsound
-
-from SKGEzhil_Voice_Assistant.script.database import db_connection
+from SKGEzhil_Voice_Assistant.script.database import cloud_mysql_connection, local_mysql_connection, sqlite_connection
 from SKGEzhil_Voice_Assistant.script.speech_engine import talk
 
 
@@ -54,9 +52,11 @@ def create_alarm(command):
 
 def ring_alarm():
     alarm_list = []
-    db_cursor = db_connection.cursor()
-    db_cursor.execute("""SELECT * FROM alarms ORDER BY time ASC""")
-    for data in db_cursor:
+    sqlite_cursor = sqlite_connection.cursor()
+    cloud_mysql_cursor = cloud_mysql_connection.cursor()
+    local_mysql_cursor = local_mysql_connection.cursor()
+    sqlite_cursor.execute("""SELECT * FROM alarms ORDER BY time ASC""")
+    for data in sqlite_cursor:
         if data[1] == 'on':
             alarm_list.append(f'{data[0]} {data[3]} {data[2]}')
             # ampm_list.append(data[3])
@@ -93,9 +93,15 @@ def ring_alarm():
             play(song)
             if every_day == 'no':
                 try:
-                    db_cursor.execute(
+                    cloud_mysql_cursor.execute(
                         f"UPDATE alarms SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
-                    db_connection.commit()
+                    cloud_mysql_connection.commit()
+                    sqlite_cursor.execute(
+                        f"UPDATE alarms SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
+                    sqlite_connection.commit()
+                    local_mysql_cursor.execute(
+                        f"UPDATE alarms SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
+                    local_mysql_cursor.commit()
                 except Exception as e:
                     print(e)
 
@@ -105,13 +111,21 @@ def ring_alarm():
 
 def set_alarm(hours, minutes, every_day, ampm):
     alarm_time = f'{hours}:{minutes}'
-    db_cursor = db_connection.cursor()
-    db_cursor.execute("USE assistant_database")
+    sqlite_cursor = sqlite_connection.cursor()
+    cloud_mysql_cursor = cloud_mysql_connection.cursor()
+    local_mysql_cursor = local_mysql_connection.cursor()
+    cloud_mysql_cursor.execute("USE assistant_database")
+    local_mysql_cursor.execute("USE assistant_database")
     sql = """INSERT INTO alarms VALUES (%s, %s, %s, %s)"""
+    sqlite = """INSERT INTO alarms VALUES (?, ?, ?, ?)"""
     if every_day:
         val = (alarm_time, 'on', 'yes', ampm)
     else:
         val = (alarm_time, 'on', 'no', ampm)
-    db_cursor.execute(sql, val)
-    db_connection.commit()
+    cloud_mysql_cursor.execute(sql, val)
+    cloud_mysql_connection.commit()
+    local_mysql_cursor.execute(sql, val)
+    local_mysql_connection.commit()
+    sqlite_cursor.execute(sqlite, val)
+    sqlite_connection.commit()
     ring_alarm()
