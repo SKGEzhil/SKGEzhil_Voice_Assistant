@@ -1,3 +1,6 @@
 credentials.json
 script/config.py
 pywhatkit_dbs.txt
+token.pickle
+gmail_token.pickle
+script/token.pickle
