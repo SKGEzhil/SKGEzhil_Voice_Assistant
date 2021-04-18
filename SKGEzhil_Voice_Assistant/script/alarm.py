@@ -96,7 +96,8 @@ def ring_alarm():
                 try:
                     lock.acquire(True)
                     sqlite_cursor.execute(
-                        f"UPDATE alarms SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
+                        f"UPDATE alarms SET activestatus = 'off' WHERE time = "
+                        f"'{current_time.hours()}:{current_time.minutes()}'")
                     sqlite_connection.commit()
                 except Exception as e:
                     print(e)

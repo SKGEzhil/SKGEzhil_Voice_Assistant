@@ -37,15 +37,15 @@ def remind(remainder, time):
     if 'minutes' in time:
         if 'hour' not in time:
             time = time.replace(' minutes', '')
-            remaind_hours = current_time.hours()
-            remaind_minutes = current_time.minutes() + int(time)
-            if remaind_minutes > 60:
-                remaind_minutes = remaind_minutes - 60
-                remaind_hours = remaind_hours + 1
-            remaind_time = f'{remaind_hours}:{remaind_minutes}'
+            remind_hours = current_time.hours()
+            remind_minutes = current_time.minutes() + int(time)
+            if remind_minutes > 60:
+                remind_minutes = remind_minutes - 60
+                remind_hours = remind_hours + 1
+            remind_time = f'{remind_hours}:{remind_minutes}'
             sql = """INSERT INTO remainders VALUES(%s, %s, %s)"""
             sqlite = """INSERT INTO remainders VALUES(?, ?, ?)"""
-            val = (remaind_time, 'on', remainder)
+            val = (remind_time, 'on', remainder)
             sqlite_cursor.execute(sqlite, val)
             sqlite_connection.commit()
         else:
@@ -54,26 +54,26 @@ def remind(remainder, time):
             time = time.split(' ')
             hours = time[0]
             minutes = time[1]
-            remaind_hours = current_time.hours() + int(hours)
-            remaind_minutes = current_time.minutes() + int(minutes)
-            if remaind_minutes > 60:
-                remaind_minutes = remaind_minutes - 60
-                remaind_hours = remaind_hours + 1
-            remaind_time = f'{remaind_hours}:{remaind_minutes}'
+            remind_hours = current_time.hours() + int(hours)
+            remind_minutes = current_time.minutes() + int(minutes)
+            if remind_minutes > 60:
+                remind_minutes = remind_minutes - 60
+                remind_hours = remind_hours + 1
+            remind_time = f'{remind_hours}:{remind_minutes}'
             sql = """INSERT INTO remainders VALUES(%s, %s, %s)"""
             sqlite = """INSERT INTO remainders VALUES(?, ?, ?)"""
-            val = (remaind_time, 'on', remainder)
+            val = (remind_time, 'on', remainder)
             sqlite_cursor.execute(sqlite, val)
             sqlite_connection.commit()
     elif 'hours' in time:
         if 'minutes' not in time:
             time = time.replace(' hours', '')
-            remaind_hours = current_time.hours() + int(time)
-            remaind_minutes = current_time.minutes()
-            remaind_time = f'{remaind_hours}:{remaind_minutes}'
+            remind_hours = current_time.hours() + int(time)
+            remind_minutes = current_time.minutes()
+            remind_time = f'{remind_hours}:{remind_minutes}'
             sql = """INSERT INTO remainders VALUES(%s, %s, %s)"""
             sqlite = """INSERT INTO remainders VALUES(?, ?, ?)"""
-            val = (remaind_time, 'on', remainder)
+            val = (remind_time, 'on', remainder)
             sqlite_cursor.execute(sqlite, val)
             sqlite_connection.commit()
 

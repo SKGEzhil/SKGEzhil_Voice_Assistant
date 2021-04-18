@@ -10,6 +10,7 @@ try:
 except Exception as e:
     print(e)
 
+
 def last_word(string):
     newstring = ""
     length = len(string)
@@ -38,7 +39,8 @@ def google_search(received_command):
     query = received_command.replace('google ', '')
     page = 1
     start = 1
-    url = f"https://www.googleapis.com/customsearch/v1?key={custom_search_api}&cx={custom_search_id}&q={query}&start={start}"
+    url = f"https://www.googleapis.com/customsearch/v1?key=" \
+          f"{custom_search_api}&cx={custom_search_id}&q={query}&start={start}"
     data = requests.get(url).json()
     print(data)
     search_items = data.get("items")
@@ -75,6 +77,7 @@ def logs(question):
     sqlite_connection.commit()
     local_mysql_cursor.execute(sql, val)
     local_mysql_connection.commit()
+
 
 def run_assistant():
     # received_command = take_command()
@@ -161,7 +164,6 @@ def run_assistant():
     elif 'google' in received_command:
         google_search(received_command)
 
-
     elif 'mean' in received_command:
         from PyDictionary import PyDictionary
         dictionary = PyDictionary()
@@ -203,7 +205,6 @@ def run_assistant():
     elif 'remind' in received_command:
         from SKGEzhil_Voice_Assistant.script import reminder
         reminder.create_reminder(received_command)
-
 
     else:
         try:
