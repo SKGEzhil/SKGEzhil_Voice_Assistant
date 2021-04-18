@@ -86,8 +86,9 @@ def read_mail():
 
             # Printing the subject, sender's email and message
             print("Subject: ", subject)
+            print('\n')
             print("From: ", sender)
-            print("Message: ", body)
+            # print("Message: ", body)
             print('\n')
             break
         except Exception as e:

@@ -10,7 +10,6 @@ try:
 except Exception as e:
     print(e)
 
-
 def last_word(string):
     newstring = ""
     length = len(string)
@@ -202,8 +201,8 @@ def run_assistant():
         alarm.create_alarm(received_command)
 
     elif 'remind' in received_command:
-        from SKGEzhil_Voice_Assistant.script import remainder
-        remainder.remainder_command(received_command)
+        from SKGEzhil_Voice_Assistant.script import reminder
+        reminder.create_reminder(received_command)
 
 
     else:
@@ -222,17 +221,20 @@ def run_assistant():
     logs(received_command)
 
 
+startup_processes = 0
 while True:
-    internet = check_connection()
-    if 'not' in internet:
-        talk('Please connect to internet')
-    else:
+    # internet = check_connection()
+    # if 'not' in internet:
+    #     talk('Please connect to internet')
+    # else:
+    if startup_processes == 0:
         from SKGEzhil_Voice_Assistant.script.alarm import ring_alarm
 
         ring_alarm()
-        from SKGEzhil_Voice_Assistant.script.remainder import remainder_alarm
+        from SKGEzhil_Voice_Assistant.script.reminder import reminder_alarm
 
-        remainder_alarm()
-        # from SKGEzhil_Voice_Assistant.script import wake_word, calendar_commands, config, news, google_calendar, weather
-        # wake_engine = wake_word.wake_word()
-        run_assistant()
+        reminder_alarm()
+        startup_processes = 1
+    # from SKGEzhil_Voice_Assistant.script import wake_word, calendar_commands, config, news, google_calendar, weather
+    # wake_engine = wake_word.wake_word()
+    run_assistant()

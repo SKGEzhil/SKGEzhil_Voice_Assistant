@@ -20,5 +20,5 @@ local_mysql_connection = mysql.connector.connect(
 )
 print(local_mysql_connection)
 
-sqlite_connection = sqlite3.connect('../assistant_db.sqlite')
+sqlite_connection = sqlite3.connect('../assistant_db.sqlite', check_same_thread=False)
 print(sqlite_connection)

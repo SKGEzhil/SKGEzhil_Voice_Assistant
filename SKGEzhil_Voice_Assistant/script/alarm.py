@@ -92,18 +92,17 @@ def ring_alarm():
             song = AudioSegment.from_mp3("../alarm.mp3")
             play(song)
             if every_day == 'no':
+                lock = threading.Lock()
                 try:
-                    cloud_mysql_cursor.execute(
-                        f"UPDATE alarms SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
-                    cloud_mysql_connection.commit()
+                    lock.acquire(True)
                     sqlite_cursor.execute(
                         f"UPDATE alarms SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
                     sqlite_connection.commit()
-                    local_mysql_cursor.execute(
-                        f"UPDATE alarms SET activestatus = 'off' WHERE time = '{current_time.hours()}:{current_time.minutes()}'")
-                    local_mysql_cursor.commit()
                 except Exception as e:
                     print(e)
+                    pass
+                finally:
+                    lock.release()
 
         timer = threading.Timer(total_sec, alarm_func)
         timer.start()

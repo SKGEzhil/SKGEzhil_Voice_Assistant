@@ -4,3 +4,4 @@ pywhatkit_dbs.txt
 token.pickle
 gmail_token.pickle
 script/token.pickle
+assistant_db.sqlite
