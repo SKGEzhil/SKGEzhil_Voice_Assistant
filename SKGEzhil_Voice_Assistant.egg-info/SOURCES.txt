@@ -1,0 +1,7 @@
+LICENSE
+setup.py
+SKGEzhil_Voice_Assistant/__init__.py
+SKGEzhil_Voice_Assistant.egg-info/PKG-INFO
+SKGEzhil_Voice_Assistant.egg-info/SOURCES.txt
+SKGEzhil_Voice_Assistant.egg-info/dependency_links.txt
+SKGEzhil_Voice_Assistant.egg-info/top_level.txt
