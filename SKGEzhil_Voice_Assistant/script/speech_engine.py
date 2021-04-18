@@ -1,6 +1,6 @@
 import pyttsx3
 import speech_recognition as sr
-
+# PyAudio~=0.2.11
 
 def take_command():
     r = sr.Recognizer()
